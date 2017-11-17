@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.la.mapper.ErrorMapper">
+
+    <!-- type为实体类User，包名已经配置，可以直接写类名 -->
+    <resultMap id="EmergencyMap" type="com.fx.la.entity.ErrorData">
+        <id property="errorId" column="error_id"/>
+        <result property="timestamp" column="timestamps" />
+        <result property="api" column="step" />
+        <result property="msg" column="description" />
+    </resultMap>
+
+    <insert id="addErrorData" parameterType="com.fx.la.entity.ErrorData" >
+        INSERT INTO
+          error_data
+        (error_id,timestamps,step,description)
+        VALUES
+        (#{errorId},#{timestamp}, #{api},#{msg})
+    </insert>
+
+</mapper>

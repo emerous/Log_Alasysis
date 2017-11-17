@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fx.la.mapper.BaseInfoMapper">
+
+    <!-- type为实体类User，包名已经配置，可以直接写类名 -->
+    <resultMap id="baseInfoMap" type="com.fx.la.entity.BaseInfo">
+        <result property="baseId" column="base_id"/>
+        <result property="timestamp" column="timestamps" />
+        <result property="api" column="step" />
+        <result property="amount" column="amount" />
+    </resultMap>
+    <insert id="addBaseInfo" parameterType="com.fx.la.entity.BaseInfo" >
+        INSERT INTO
+          base_info_statistics
+        (base_id,timestamps,step,amount)
+        VALUES
+        (#{baseId},#{timestamp},#{api},#{amount})
+    </insert>
+    <select id="getMsgByTime" resultMap="baseInfoMap" parameterType="long">
+        select
+            *
+        from
+            base_info_statistics
+        WHERE
+            timestamps=#{time}
+
+    </select>
+    <select id="getCountByTimeRange" resultType="com.fx.la.entity.statistic.CommonApiMsg" parameterType="map" >
+        select
+          step as api,SUM(amount) as count
+        from
+          base_info_statistics b
+        where
+          b.timestamps>=#{start}
+          AND
+          b.timestamps &lt; #{end}
+        GROUP BY
+          step
+
+    </select>
+    <update id="updateBaseInfo" parameterType="com.fx.la.entity.BaseInfo">
+        UPDATE
+            base_info_statistics
+        SET
+            amount=#{amount}
+        WHERE
+            timestamps=#{timestamp} and step=#{api}
+    </update>
+
+</mapper>
